@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es2020",
+    "target": "es2020",
+    "allowJs": true,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*"]
+}

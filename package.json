@@ -1,0 +1,29 @@
+{
+  "name": "poker-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@race-foundation/borsh": "../race/js/borsh",
+    "@race-foundation/sdk-core": "../race/js/sdk-core",
+    "@race-foundation/sdk-facade": "../race/js/sdk-facade",
+    "@race-foundation/sdk-solana": "../race/js/sdk-solana",
+    "@solana/wallet-adapter-base": "^0.9.23",
+    "@solana/wallet-adapter-phantom": "^0.9.24",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "stream-browserify": "^3.0.0"
+  }
+}

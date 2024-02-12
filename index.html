@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+  <head></head>
+  <body>
+    <h3>RACE Bundle Test</h3>
+    <div>Wallet Address:<span id="#wallet-addr"></span></div>
+    <button id="#connect">Connect Wallet</button>
+    <button id="#attach">Attach</button>
+    <div id="#state"></div>
+    <script src="./dist/main.js"></script>
+    <script>
+     // A function get called when a new player profile is fetched
+     const onProfile = (id, profile) => {
+         console.log('Profile #' + id, profile)
+     }
+     // A function get called when received an event
+     // The `event` can be empty, for the first time initialization
+     const onEvent = (state, event) => {
+         console.log('State:', state)
+         console.log('Event:', event)
+     }
+     document.getElementById("#connect").addEventListener("click", () => {
+         race.connectWallet().then(wallet => {
+             // `wallet` is the WalletAdapter from RACE.
+             document.getElementById("#wallet-addr").innerText = wallet.walletAddr
+         })
+     })
+     document.getElementById("#attach").addEventListener("click", () => {
+         // Attach to a game with its address. This is the HU table.
+         // Pass two callback functions to get notified when state changed.
+         race.attachGame('2yYtuk5TcJWp1CH8rorSs4frcomd8mmNs87aFnYkc9K5', { onProfile, onEvent })
+     })
+    </script>
+  </body>
+</html>
