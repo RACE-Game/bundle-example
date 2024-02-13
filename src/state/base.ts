@@ -1,50 +1,55 @@
 import { field, array } from '@race-foundation/borsh'
 
+const PLAYER_STATUSES = ['Wait', 'Acted', 'Acting', 'Allin', 'Fold', 'Init', 'Leave', 'Out']
+type PlayerStatus = typeof PLAYER_STATUSES[number]
+
 export class Player {
   @field('u64')
-  id!: bigint;
+  id!: bigint
 
   @field('u64')
-  chips!: bigint;
+  chips!: bigint
 
   @field('usize')
-  position!: number;
+  position!: number
 
   @field('u8')
-  status!: number;
+  statusRaw!: number
+  status: PlayerStatus
 
   @field('u8')
-  timeout!: number;
+  timeout!: number
+
+  constructor(fields: any) {
+    Object.assign(this, fields)
+    this.status = PLAYER_STATUSES[this.statusRaw]
+  }
+}
+
+export class ActingPlayer {
+  @field('u64')
+  id!: string
+
+  @field('usize')
+  position!: number
+
+  @field('u64')
+  clock!: bigint
 
   constructor(fields: any) {
     Object.assign(this, fields)
   }
 }
 
-export class ActingPlayer {
-  @field('u64')
-  id!: string;
-
-  @field('usize')
-  position!: number;
-
-  @field('u64')
-  clock!: bigint;
-
-  constructor(fields: any) {
-    Object.assign(this, fields);
-  }
-}
-
 export class Pot {
   @field(array('u64'))
-  owners!: bigint[];
+  owners!: bigint[]
 
   @field(array('u64'))
-  winners!: bigint[];
+  winners!: bigint[]
 
   @field('u64')
-  amount!: bigint;
+  amount!: bigint
 
   constructor(fields: any) {
     Object.assign(this, fields)

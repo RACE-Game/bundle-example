@@ -3,10 +3,6 @@ import { AppClient, AppHelper, GameContextSnapshot, GameEvent, IWallet, PlayerPr
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom'
 import { Holdem } from './state'
 
-const REG_ADDR = 'CDuTN8k2Gjw79gkyt6H4jBNtFTLqnoPXYu3T74XZCQeZ'
-
-console.log(`REG_ADDR = ${REG_ADDR}`)
-
 let wallet: IWallet | undefined
 let client: AppClient | undefined
 
@@ -17,14 +13,15 @@ function toJson(obj: any) {
 export async function connectWallet() {
   const phantom = new PhantomWalletAdapter()
   await phantom.connect()
-  wallet = new SolanaWalletAdapter(phantom);
+  wallet = new SolanaWalletAdapter(phantom)
   console.log('Wallet connect')
   return wallet
 }
 
-export async function fetchGames() {
+export async function fetchGames(regAddr: string) {
   let transport = new SolanaTransport('https://rpc.racepoker.app')
-  const registration = await transport.getRegistration(REG_ADDR)
+  console.log(`Fetch games from registration: ${regAddr}`)
+  const registration = await transport.getRegistration(regAddr)
   if (registration === undefined) throw new Error('Registration not found')
   const games = toJson(registration.games)
   console.log(`there are ${registration.games.length} games`)
@@ -63,7 +60,8 @@ export async function attachGame(gameAddr: string,
     onEvent,
     onMessage: undefined,
     onTxState: undefined,
-    onConnectionState: undefined
+    onConnectionState: undefined,
+    storage: window.localStorage,
   })
 
   await client.attachGame()

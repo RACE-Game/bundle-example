@@ -6,6 +6,10 @@ export class AwardPot {
 
   @field('u64')
   amount!: bigint;
+
+  constructor(fields: any) {
+    Object.assign(this, fields)
+  }
 }
 
 export class ChipsChange {
@@ -17,6 +21,10 @@ export class ChipsChange {
 
   @field('u64')
   after!: bigint;
+
+  constructor(fields: any) {
+    Object.assign(this, fields)
+  }
 }
 
 export abstract class Display {}
