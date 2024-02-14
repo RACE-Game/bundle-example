@@ -14,7 +14,19 @@ function buildTransport() {
 }
 
 function toJson(obj: any) {
-  return JSON.stringify(obj, (_, v) => typeof v === 'bigint' ? v.toString() : v)
+  return JSON.stringify(obj, (_, val) => {
+    if (typeof val === 'bigint') {
+      return val.toString()
+    } else if (val instanceof Map) {
+      let obj: any = {}
+      for (const [k, v] of val.entries()) {
+        obj[k.toString()] = v
+      }
+      return obj
+    } else {
+      return val
+    }
+  })
 }
 
 export async function connectWallet() {
@@ -37,6 +49,7 @@ export async function fetchGames(regAddr: string) {
 
 type OnEvent = (state: string, event: string) => void
 type OnProfile = (id: string, profile: string) => void
+type OnGameInfo = (info: string) => void
 
 export async function exitGame() {
   client.exit()
@@ -53,7 +66,8 @@ export async function joinGame(amount: bigint) {
 export async function attachGame(gameAddr: string,
   callbacks: {
     onEvent: OnEvent,
-    onProfile: OnProfile
+    onProfile: OnProfile,
+    onInfo: OnGameInfo
   }) {
   if (wallet === undefined) throw new Error('Wallet is not connected')
   const transport = buildTransport()
@@ -85,7 +99,9 @@ export async function attachGame(gameAddr: string,
     onTxState: undefined,
     onConnectionState: undefined,
     storage: window.localStorage,
-  })
+  });
+
+  callbacks.onInfo(toJson(client.info))
 
   await client.attachGame()
   return client
