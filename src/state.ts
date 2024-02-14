@@ -1,13 +1,8 @@
 import { field, array, option, map, deserialize, enums, struct } from '@race-foundation/borsh'
+import { HOLDEM_STAGES, HoldemStage, STREETS, Street, GAME_MODES, GameMode } from './state/enums'
 import { HandHistory } from './state/hand_history'
 import { Display } from './state/display'
-import { Player, ActingPlayer, Pot } from './state/base'
-
-const HOLDEM_STAGES = ['Init', 'ShareKey', 'Play', 'Runner', 'Settle', 'Showdown'] as const
-type HoldemStage = typeof HOLDEM_STAGES[number]
-
-const STREETS = ['Init', 'Preflop', 'Flop', 'Turn', 'River', 'Showdown']
-type Street = typeof STREETS[number]
+import { ActingPlayer, Player, Pot } from './state/base'
 
 export class Holdem {
   @field('usize')
@@ -76,7 +71,8 @@ export class Holdem {
   display!: Display[]
 
   @field('u8')
-  mode!: number
+  modeRaw!: number
+  mode: GameMode
 
   @field('u64')
   next_game_start!: bigint
@@ -91,6 +87,7 @@ export class Holdem {
     Object.assign(this, fields)
     this.stage = HOLDEM_STAGES[this.stageRaw]
     this.street = STREETS[this.streetRaw]
+    this.mode = GAME_MODES[this.modeRaw]
   }
 
   static deserialize(data: Uint8Array): Holdem {

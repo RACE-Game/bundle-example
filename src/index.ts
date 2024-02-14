@@ -3,12 +3,14 @@ import { AppClient, GameContextSnapshot, GameEvent, IWallet, PlayerProfileWithPf
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom'
 import { Holdem } from './state'
 import { Bet, Call, Check, Fold, Raise } from './state/game_event'
+import { FacadeTransport, FacadeWallet } from '@race-foundation/sdk-facade'
 
 let wallet: IWallet | undefined
 let client: AppClient | undefined
 
 function buildTransport() {
   return new SolanaTransport('https://rpc.racepoker.app')
+  // return new FacadeTransport('http://localhost:12002')
 }
 
 function toJson(obj: any) {

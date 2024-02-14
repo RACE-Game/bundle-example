@@ -1,20 +1,22 @@
+import { BLIND_TYPES, BlindType } from './enums';
 import { GameEvent } from './game_event'
 import { array, struct, map, variant, enums, field } from '@race-foundation/borsh'
 
-export const BlindTypes = ['Sb', 'Bb', 'Ante', 'Stradle']
 
 export class BlindBet {
   @field('u64')
   id!: bigint;
 
   @field('u8')
-  blind_type!: number;
+  blind_typeRaw!: number;
+  blind_type: BlindType
 
   @field('u64')
   amount: bigint;
 
   constructor(fields: any) {
     Object.assign(this, fields)
+    this.blind_type = BLIND_TYPES[this.blind_typeRaw]
   }
 }
 

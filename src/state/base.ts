@@ -1,7 +1,5 @@
 import { field, array } from '@race-foundation/borsh'
-
-const PLAYER_STATUSES = ['Wait', 'Acted', 'Acting', 'Allin', 'Fold', 'Init', 'Leave', 'Out']
-type PlayerStatus = typeof PLAYER_STATUSES[number]
+import { PLAYER_STATUSES, PlayerStatus } from './enums'
 
 export class Player {
   @field('u64')
