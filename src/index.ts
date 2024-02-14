@@ -46,6 +46,10 @@ export async function detachGame() {
   client.detach()
 }
 
+export async function joinGame(amount: bigint) {
+  await client.join({ amount, createProfileIfNeeded: true })
+}
+
 export async function attachGame(gameAddr: string,
   callbacks: {
     onEvent: OnEvent,
