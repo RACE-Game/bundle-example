@@ -1,15 +1,14 @@
 import { SolanaTransport, SolanaWalletAdapter } from '@race-foundation/sdk-solana'
-import { FacadeTransport, FacadeWallet } from '@race-foundation/sdk-facade'
-import { AppClient, AppHelper, GameContextSnapshot, GameEvent, IWallet, PlayerProfileWithPfp } from '@race-foundation/sdk-core'
+import { AppClient, GameContextSnapshot, GameEvent, IWallet, PlayerProfileWithPfp } from '@race-foundation/sdk-core'
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom'
 import { Holdem } from './state'
+import { Bet, Call, Check, Fold, Raise } from './state/game_event'
 
 let wallet: IWallet | undefined
 let client: AppClient | undefined
 
 function buildTransport() {
   return new SolanaTransport('https://rpc.racepoker.app')
-  // return new FacadeTransport('http://localhost:12002')
 }
 
 function toJson(obj: any) {
@@ -21,11 +20,6 @@ export async function connectWallet() {
   await phantom.connect()
   wallet = new SolanaWalletAdapter(phantom)
   console.log('Wallet connect')
-  return wallet
-}
-
-export async function connectFacadeWallet() {
-  wallet = new FacadeWallet()
   return wallet
 }
 
@@ -44,6 +38,10 @@ type OnProfile = (id: string, profile: string) => void
 
 export async function exitGame() {
   client.exit()
+}
+
+export async function detachGame() {
+  client.detach()
 }
 
 export async function attachGame(gameAddr: string,
@@ -85,4 +83,24 @@ export async function attachGame(gameAddr: string,
 
   await client.attachGame()
   return client
+}
+
+export async function check() {
+  await client.submitEvent(new Check({}))
+}
+
+export async function bet(amount: bigint) {
+  await client.submitEvent(new Bet({ amount }))
+}
+
+export async function raise(amount: bigint) {
+  await client.submitEvent(new Raise({ amount }))
+}
+
+export async function call() {
+  await client.submitEvent(new Call({}))
+}
+
+export async function fold() {
+  await client.submitEvent(new Fold({}))
 }

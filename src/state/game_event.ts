@@ -1,9 +1,14 @@
-import { field, variant } from "@race-foundation/borsh"
+import { field, variant, serialize } from "@race-foundation/borsh"
+import { ICustomEvent } from "@race-foundation/sdk-core"
 
 const EVENT_TYPES = ['Bet', 'Check', 'Call', 'Fold', 'Raise'] as const
 type EventType = typeof EVENT_TYPES[number]
 
-export abstract class GameEvent {}
+export abstract class GameEvent implements ICustomEvent {
+  serialize(): Uint8Array {
+    return serialize(this)
+  }
+}
 
 @variant(0)
 export class Bet extends GameEvent {
