@@ -29,6 +29,9 @@ export class Holdem {
   rake!: number
 
   @field('u8')
+  rakeCap!: number
+
+  @field('u8')
   stageRaw!: number
   stage: HoldemStage
 
