@@ -47,7 +47,7 @@ export async function fetchGames(regAddr: string) {
   return games
 }
 
-type OnEvent = (state: string, event: string) => void
+type OnEvent = (state: string, event: string, decryption: string) => void
 type OnProfile = (id: string, profile: string) => void
 type OnGameInfo = (info: string) => void
 
@@ -78,15 +78,20 @@ export async function attachGame(gameAddr: string,
     callbacks.onProfile(_id, _profile)
   }
 
-  const onEvent = (_ctx: GameContextSnapshot, rawState: Uint8Array, event: GameEvent | undefined) => {
+  const onEvent = async (_ctx: GameContextSnapshot, rawState: Uint8Array, event: GameEvent | undefined) => {
     const state = Holdem.deserialize(rawState)
     const stateJson = toJson(state);
+    let decryptionJson = "{}"
+    if (state.deck_random_id > 0) {
+      const decryption = await client.getRevealed(state.deck_random_id)
+      decryptionJson = toJson(decryption)
+    }
     let patchedEvent = null
     if (event) {
       patchedEvent = { eventType: event.kind(), ...event }
     }
     const eventJson = toJson(patchedEvent)
-    callbacks.onEvent(stateJson, eventJson)
+    callbacks.onEvent(stateJson, eventJson, decryptionJson)
   }
 
   client = await AppClient.initialize({
