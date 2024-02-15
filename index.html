@@ -16,9 +16,10 @@
      }
      // A function get called when received an event
      // The `event` can be empty, for the first time initialization
-     const onEvent = (state, event) => {
+     const onEvent = (state, event, player) => {
          console.log('State:', state)
          console.log('Event:', event)
+         console.log('CurrPlayer:', player)
      }
      const onInfo = (info) => {
          console.log('Info:', info)
