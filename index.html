@@ -19,7 +19,7 @@
      const onEvent = (state, event, player) => {
          console.log('State:', state)
          console.log('Event:', event)
-         console.log('CurrPlayer:', player)
+         console.log('Player:', player)
      }
      const onInfo = (info) => {
          console.log('Info:', info)
@@ -34,7 +34,6 @@
          // Attach to a game with its address. This is the HU table.
          // Pass two callback functions to get notified when state changed.
          const gameAddr = '2yYtuk5TcJWp1CH8rorSs4frcomd8mmNs87aFnYkc9K5'
-         /* const gameAddr = 'devgamespecsholdemcashjson' */
          race.attachGame(gameAddr, { onProfile, onEvent, onInfo })
      })
     </script>

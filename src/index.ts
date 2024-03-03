@@ -85,11 +85,12 @@ export async function attachGame(gameAddr: string,
     try {
       const currPlayerId = client.addrToId(wallet.walletAddr)
       currPlayer = state.player_map.get(currPlayerId)
-      const handIndexes = state.hand_index_map.get(currPlayerId)
-      if (state.deck_random_id > 0) {
+      if (currPlayer === undefined) currPlayer = null
+      if (currPlayer && state.deck_random_id > 0) {
+        const handIndexes = state.hand_index_map.get(currPlayerId)
         const decryption = await client.getRevealed(state.deck_random_id)
         if (handIndexes) {
-          const holeCards = handIndexes.map(idx => decryption.get(idx))
+          const holeCards = handIndexes.map(idx => decryption.get(idx)).filter(x => x !== undefined)
           currPlayer['hole_cards'] = holeCards
         }
       }
